@@ -2,6 +2,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -81,4 +82,13 @@ fun WebViewScreen(
             }
         }
     )
+
+    DisposableEffect(Unit) {
+        onDispose {
+            (webView.parent as? android.view.ViewGroup)?.removeView(webView)
+            webView.stopLoading()
+            webView.webChromeClient = null
+            webView.destroy()
+        }
+    }
 }

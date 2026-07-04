@@ -164,6 +164,7 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
                     state.copy(tabs = tabs, activeTabId = activeId)
 
                 }
+                thumbnails.remove(intent.tabId)
                 persist()
             }
 
