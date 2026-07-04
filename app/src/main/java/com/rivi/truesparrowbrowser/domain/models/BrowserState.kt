@@ -10,13 +10,15 @@ data class BrowserState(
     val loadingProgress: Float = 0f,
     val reload: Boolean = false,
     val stop: Boolean = false,
-    val activeTab: BrowserTab = tabs.firstOrNull { it.id == activeTabId } ?: tabs.first(),
     val tabCount: Int = 1,
-    val searchQuery: String = activeTab.currentUrl,
+
     val history: List<String> = emptyList(),
     val currentIndex: Int = -1,
-    val homeTabs: List<Shortcut> = emptyList()
+    val homeTabs: List<Shortcut> = emptyList(),
+    val showTabSwitcher: Boolean = false
 ) {
+    val activeTab: BrowserTab = tabs.firstOrNull { it.id == activeTabId } ?: tabs.first()
+    val searchQuery: String = activeTab.currentUrl
     val canGoBack: Boolean get() = currentIndex > 0
     val canGoForward: Boolean get() = currentIndex < history.size - 1
 }

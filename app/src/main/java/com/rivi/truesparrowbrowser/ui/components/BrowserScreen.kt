@@ -25,6 +25,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,7 +48,7 @@ fun BrowserScreen(viewModel: BrowserViewModel) {
 
     Scaffold(bottomBar = {
         BrowserBottomBar(
-            tabCount = state.value.tabs,
+            tabCount = state.value.tabs.size,
             onHomeClick = { viewModel.handleIntent(BrowserIntent.GoHome) },
             onNewTabClick = { viewModel.handleIntent(BrowserIntent.NewTab) },
             onSettingsClick = { },
@@ -68,6 +69,10 @@ fun BrowserContent(
 ) {
     val state by viewModel.browserState.collectAsState()
     var searchValue by rememberSaveable { mutableStateOf("") }
+
+    LaunchedEffect(state.activeTabId, state.searchQuery) {
+        searchValue = state.searchQuery
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -165,7 +170,7 @@ fun BrowserContent(
 
         Spacer(Modifier.height(16.dp))
 
-        if (state.searchQuery.isBlank()) {
+        if (state.activeTab.currentUrl.isBlank()) {
             HomeScreen(
                 modifier = Modifier.weight(1f),
                 onSearch = { viewModel.handleIntent(BrowserIntent.SearchAddress(it)) },

@@ -8,7 +8,7 @@ data class BrowserTab(
     val id: String = UUID.randomUUID().toString(),
     val history: List<String> = emptyList(),
     val currentIndex: Int = -1,
-    val title: String = "New Tab"
+    val title: String = "New Tab",
 ) {
     val currentUrl: String get() = history.getOrNull(currentIndex) ?: ""
     val canGoBack: Boolean get() = currentIndex > 0

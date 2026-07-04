@@ -12,7 +12,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.rivi.truesparrowbrowser.ui.components.BrowserScreen
 import com.rivi.truesparrowbrowser.ui.theme.TrueSparrowBrowserTheme
 import com.rivi.truesparrowbrowser.ui.viewmodels.BrowserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<BrowserViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
