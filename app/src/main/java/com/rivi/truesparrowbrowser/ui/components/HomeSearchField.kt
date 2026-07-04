@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -54,8 +55,12 @@ fun HomeSearchField(onSearch: (String) -> Unit) {
                 }
             },
         placeholder = {
-            if (!isFocused) Text("Search the web or enter an address")
+            if (!isFocused) Text(
+                "Search the web or enter an address",
+                style = MaterialTheme.typography.bodyMedium
+            )
         },
+        textStyle = MaterialTheme.typography.titleMedium,
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
         shape = RoundedCornerShape(24.dp),
         singleLine = true,
