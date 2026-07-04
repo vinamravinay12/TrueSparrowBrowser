@@ -77,6 +77,7 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
                 tabs = state.tabs.map { if (it.id == state.activeTabId) updateTab(it) else it }
             )
         }
+        persist()
     }
 
 
@@ -167,7 +168,7 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
             is BrowserIntent.UpdateProgress -> {
                 _browserState.update {
                     it.copy(
-                        loadingProgress = intent.progress.toFloat(),
+                        loadingProgress = intent.progress.toFloat() / 100f,
                         isLoading = intent.progress in 1..99
                     )
                 }

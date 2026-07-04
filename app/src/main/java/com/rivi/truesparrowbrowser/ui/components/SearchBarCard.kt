@@ -21,18 +21,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.R
 
 @Composable
 fun SearchBarCard(
-    searchValue: String,
-    onSearchValueChange: (String) -> Unit,
+    searchValue: TextFieldValue,
+    onSearchValueChange: (TextFieldValue) -> Unit,
     canGoBack: Boolean,
     canGoForward: Boolean,
     hasUrl: Boolean,
@@ -44,6 +49,8 @@ fun SearchBarCard(
     onStop: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
@@ -91,20 +98,29 @@ fun SearchBarCard(
                 cursorBrush = SolidColor(Color.Black),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
                 keyboardActions = KeyboardActions(
-                    onGo = { onSearch(searchValue) }
+                    onGo = {
+                        onSearch(searchValue.text)
+                        keyboardController?.hide()
+                        focusManager.clearFocus()
+                    }
                 ),
                 modifier = Modifier
                     .weight(1f)
                     .height(40.dp)
                     .clip(RoundedCornerShape(20.dp))
                     .background(Color.White)
-                    .padding(horizontal = 14.dp),
+                    .padding(horizontal = 14.dp)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            onSearchValueChange(searchValue.copy(selection = TextRange(searchValue.text.length)))
+                        }
+                    },
                 decorationBox = { inner ->
                     Box(
                         modifier = Modifier.fillMaxHeight(),
                         contentAlignment = Alignment.CenterStart
                     ) {
-                        if (searchValue.isEmpty()) {
+                        if (searchValue.text.isBlank()) {
                             Text("Search or type URL", color = Color.Gray, fontSize = 15.sp)
                         }
                         inner()

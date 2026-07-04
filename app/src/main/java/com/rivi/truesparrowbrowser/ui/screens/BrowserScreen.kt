@@ -19,11 +19,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.domain.models.BrowserIntent
@@ -78,12 +79,14 @@ fun BrowserContent(
     onWebViewCreated: (WebView) -> Unit = {}
 ) {
     val state by viewModel.browserState.collectAsState()
-    var searchValue by rememberSaveable { mutableStateOf("") }
+    var searchValue by remember { mutableStateOf(TextFieldValue("")) }
     var webView by remember { mutableStateOf<WebView?>(null) }
 
-    LaunchedEffect(state.activeTabId, state.searchQuery) {
-        searchValue = state.searchQuery
+    LaunchedEffect(state.activeTabId, state.searchQuery, state.showingHome) {
+        val text = if (state.showingHome) "" else state.searchQuery
+        searchValue = TextFieldValue(text = text, selection = TextRange(text.length))
     }
+    
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -132,7 +135,7 @@ fun BrowserContent(
         if (state.activeTab.currentUrl.isBlank()) {
             HomeScreen(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .weight(1f)
                     .background(MaterialTheme.colorScheme.background),
                 onSearch = { viewModel.handleIntent(BrowserIntent.SearchAddress(it)) },
                 shortcuts = state.homeTabs
