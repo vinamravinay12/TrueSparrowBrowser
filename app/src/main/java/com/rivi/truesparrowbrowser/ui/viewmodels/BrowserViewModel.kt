@@ -86,7 +86,7 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
     fun handleIntent(intent: BrowserIntent) {
         when (intent) {
             is BrowserIntent.SearchAddress -> {
-                val url = toUrlOrSearch(intent.searchText)
+                val url = intent.searchText.toUrlOrSearch()
                 updateActiveTab { tab ->
                     if (tab.currentIndex >= 0 && tab.history[tab.currentIndex] == url) tab
                     else {

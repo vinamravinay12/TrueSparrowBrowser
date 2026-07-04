@@ -5,8 +5,8 @@ import java.net.URLEncoder
 
 object SearchUtils {
 
-    fun toUrlOrSearch(input: String): String {
-        val query = input.trim()
+    fun String.toUrlOrSearch(): String {
+        val query = this.trim()
         if (query.isBlank()) return query
         if (Patterns.WEB_URL.matcher(query)
                 .matches() && (query.startsWith("http://") || query.startsWith("https://"))
