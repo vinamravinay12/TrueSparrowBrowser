@@ -1,5 +1,6 @@
 package com.rivi.truesparrowbrowser.ui.screens
 
+import android.webkit.WebView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,11 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,15 +25,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.rivi.truesparrowbrowser.R
 import com.rivi.truesparrowbrowser.domain.models.BrowserIntent
 import com.rivi.truesparrowbrowser.ui.components.BrowserBottomBar
 import com.rivi.truesparrowbrowser.ui.components.HomeScreen
@@ -83,6 +82,7 @@ fun BrowserContent(
 ) {
     val state by viewModel.browserState.collectAsState()
     var searchValue by rememberSaveable { mutableStateOf("") }
+    var webView by remember { mutableStateOf<WebView?>(null) }
 
     LaunchedEffect(state.activeTabId, state.searchQuery) {
         searchValue = state.searchQuery
@@ -116,9 +116,9 @@ fun BrowserContent(
                     enabled = state.canGoBack
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        tint = Color.Black,
-                        contentDescription = "Back arrrow"
+                        painter = painterResource(R.drawable.ic_back),
+                        tint = if (state.canGoBack) Color.Black else Color.LightGray,
+                        contentDescription = "Move back"
                     )
                 }
 
@@ -127,8 +127,9 @@ fun BrowserContent(
                     enabled = state.canGoForward
                 ) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = null
+                        painter = painterResource(R.drawable.ic_next),
+                        tint = if (state.canGoForward) Color.Black else Color.LightGray,
+                        contentDescription = "Move forward"
                     )
                 }
                 OutlinedTextField(
@@ -157,22 +158,26 @@ fun BrowserContent(
                         onDone = { viewModel.handleIntent(BrowserIntent.SearchAddress(searchValue)) }
                     )
                 )
-
-                IconButton(onClick = { viewModel.handleIntent(BrowserIntent.Reload) }) {
-                    if (state.isLoading) {
-                        IconButton(onClick = {}) {
-                            Icon(
-                                imageVector = Icons.Default.PlayArrow,
-                                contentDescription = "Stop"
-                            )
-                        }
-                    } else {
-                        IconButton(onClick = { viewModel.handleIntent(BrowserIntent.Reload) }) {
-                            Icon(
-                                imageVector = Icons.Default.Refresh,
-                                contentDescription = "Reload page"
-                            )
-                        }
+                val hasUrl = state.searchQuery.isNotBlank()
+                IconButton(onClick = { viewModel.handleIntent(BrowserIntent.Stop) }) {
+                    IconButton(
+                        onClick = {
+                            if (state.isLoading) {
+                                webView?.stopLoading()
+                                viewModel.handleIntent(BrowserIntent.Stop)
+                            } else {
+                                webView?.reload()
+                            }
+                        },
+                        enabled = hasUrl
+                    ) {
+                        Icon(
+                            painter = if (state.isLoading) painterResource(R.drawable.ic_stop) else painterResource(
+                                R.drawable.ic_reload
+                            ),
+                            tint = if (hasUrl) Color.Black else Color.LightGray,
+                            contentDescription = if (state.isLoading) "Stop" else "Reload"
+                        )
                     }
 
                 }
@@ -197,7 +202,8 @@ fun BrowserContent(
                     .fillMaxWidth()
                     .weight(1f),
                 onProgressChanged = { viewModel.handleIntent(BrowserIntent.UpdateProgress(it)) },
-                onUrlChanged = { viewModel.handleIntent(BrowserIntent.UrlChanged(it)) }
+                onUrlChanged = { viewModel.handleIntent(BrowserIntent.UrlChanged(it)) },
+                onCreated = { webView = it }
             )
         }
 

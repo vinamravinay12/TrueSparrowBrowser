@@ -14,7 +14,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 @Composable
 fun WebViewScreen(
     pageUrl: String, modifier: Modifier, onProgressChanged: (Int) -> Unit = {},
-    onUrlChanged: (String) -> Unit
+    onUrlChanged: (String) -> Unit = {},
+    onCreated: (WebView) -> Unit = {}
 ) {
     var lastLoadedUrl by rememberSaveable { mutableStateOf<String?>(null) }
     AndroidView(
@@ -44,6 +45,8 @@ fun WebViewScreen(
                         onProgressChanged(newProgress)
                     }
                 }
+            }.also {
+                onCreated(it)
             }
         },
         update = { webView ->

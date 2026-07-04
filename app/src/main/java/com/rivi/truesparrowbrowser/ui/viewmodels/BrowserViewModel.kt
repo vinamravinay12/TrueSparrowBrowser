@@ -174,6 +174,12 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
                 persist()
             }
 
+            is BrowserIntent.Reload -> {
+
+            }
+
+            is BrowserIntent.Stop -> _browserState.update { it.copy(isLoading = false) }
+
             else -> {}
         }
     }
