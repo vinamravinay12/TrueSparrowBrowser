@@ -18,6 +18,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,6 +55,8 @@ fun SearchBarCard(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    var isFocused by remember { mutableStateOf(false) }
+
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
@@ -120,7 +126,7 @@ fun SearchBarCard(
                         modifier = Modifier.fillMaxHeight(),
                         contentAlignment = Alignment.CenterStart
                     ) {
-                        if (searchValue.text.isBlank()) {
+                        if (searchValue.text.isBlank() && isFocused.not()) {
                             Text("Search or type URL", color = Color.Gray, fontSize = 15.sp)
                         }
                         inner()

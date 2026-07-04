@@ -3,6 +3,7 @@ package com.rivi.truesparrowbrowser.ui.screens
 import WebViewScreen
 import android.webkit.WebView
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -86,7 +87,7 @@ fun BrowserContent(
         val text = if (state.showingHome) "" else state.searchQuery
         searchValue = TextFieldValue(text = text, selection = TextRange(text.length))
     }
-    
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -109,7 +110,7 @@ fun BrowserContent(
             onSearchValueChange = { searchValue = it },
             canGoBack = state.canGoBack,
             canGoForward = state.canGoForward,
-            hasUrl = state.searchQuery.isNotBlank(),
+            hasUrl = state.searchQuery.isNotBlank() && state.showingHome.not(),
             isLoading = state.isLoading,
             moveBack = {
                 val wv = webView
@@ -141,36 +142,41 @@ fun BrowserContent(
                 shortcuts = state.homeTabs
             )
         } else {
-            WebViewScreen(
-                pageUrl = state.searchQuery,
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
-                onProgressChanged = { viewModel.handleIntent(BrowserIntent.UpdateProgress(it)) },
-                onUrlChanged = { viewModel.handleIntent(BrowserIntent.UrlChanged(it)) },
-                onCreated = {
-                    webView = it
-                    onWebViewCreated(it)
-                },
-                onError = { viewModel.handleIntent(BrowserIntent.PageError) },
-                onPageStarted = { viewModel.handleIntent(BrowserIntent.ClearError) },
-                onNavStateChanged = { back, fwd ->
-                    viewModel.handleIntent(BrowserIntent.NavStateChanged(back, fwd))
+                    .weight(1f)
+            ) {
+                WebViewScreen(
+                    pageUrl = state.searchQuery,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    onProgressChanged = { viewModel.handleIntent(BrowserIntent.UpdateProgress(it)) },
+                    onUrlChanged = { viewModel.handleIntent(BrowserIntent.UrlChanged(it)) },
+                    onCreated = {
+                        webView = it
+                        onWebViewCreated(it)
+                    },
+                    onError = { viewModel.handleIntent(BrowserIntent.PageError) },
+                    onPageStarted = { viewModel.handleIntent(BrowserIntent.ClearError) },
+                    onNavStateChanged = { back, fwd ->
+                        viewModel.handleIntent(BrowserIntent.NavStateChanged(back, fwd))
+                    }
+                )
+                if (state.isPageError) {
+                    ErrorScreen(onRetry = { webView?.reload() })
                 }
-            )
-            if (state.isPageError) {
-                ErrorScreen(onRetry = { webView?.reload() })
-            }
 
-            if (state.showingHome) {
-                Surface(modifier = Modifier.fillMaxSize()) {
-                    HomeScreen(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.background),
-                        onSearch = { viewModel.handleIntent(BrowserIntent.SearchAddress(it)) },
-                        shortcuts = state.homeTabs
-                    )
+                if (state.showingHome) {
+                    Surface(modifier = Modifier.fillMaxSize()) {
+                        HomeScreen(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(MaterialTheme.colorScheme.background),
+                            onSearch = { viewModel.handleIntent(BrowserIntent.SearchAddress(it)) },
+                            shortcuts = state.homeTabs
+                        )
+                    }
                 }
             }
         }
