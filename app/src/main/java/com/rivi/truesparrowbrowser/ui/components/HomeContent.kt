@@ -1,5 +1,6 @@
 package com.rivi.truesparrowbrowser.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,10 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.rivi.truesparrowbrowser.R
 import com.rivi.truesparrowbrowser.domain.models.Shortcut
 
 @Composable
@@ -50,7 +53,13 @@ fun HomeScreen(
                 .background(Color(0xFF4285F4)),
             contentAlignment = Alignment.Center
         ) {
-            Text("S", color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+            Image(
+                painter = painterResource(R.drawable.ic_launcher_foreground),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(CircleShape)
+            )
         }
 
         Spacer(Modifier.height(12.dp))

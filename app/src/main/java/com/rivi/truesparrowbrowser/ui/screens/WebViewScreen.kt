@@ -65,6 +65,8 @@ fun WebViewScreen(
                     override fun onProgressChanged(view: WebView?, newProgress: Int) {
                         onProgressChanged(newProgress)
                     }
+
+
                 }
             }.also {
                 onCreated(it)
