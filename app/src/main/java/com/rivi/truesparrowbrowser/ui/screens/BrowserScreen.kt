@@ -34,6 +34,16 @@ import com.rivi.truesparrowbrowser.ui.components.SearchBarCard
 import com.rivi.truesparrowbrowser.ui.viewmodels.BrowserViewModel
 
 
+/**
+ * The main entry point for the browser UI, responsible for orchestrating the display
+ * of the web content, the tab switcher, and the bottom navigation bar.
+ *
+ * This component observes the [BrowserViewModel] state to toggle between the active
+ * web page view and the tab management screen. It also handles capturing thumbnails
+ * of the current [WebView] before navigating to the tab switcher.
+ *
+ * @param viewModel The [BrowserViewModel] providing the UI state and handling user intents.
+ */
 @Composable
 fun BrowserScreen(viewModel: BrowserViewModel) {
     val state = viewModel.browserState.collectAsState()

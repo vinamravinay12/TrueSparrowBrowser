@@ -6,7 +6,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// App type scale. Reference via MaterialTheme.typography.* and set color at the call site.
 val Typography = Typography(
     // "Sparrow Search"
     headlineSmall = TextStyle(

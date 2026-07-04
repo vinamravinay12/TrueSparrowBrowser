@@ -23,6 +23,17 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel responsible for managing the state and business logic of the browser.
+ *
+ * It follows an MVI-like pattern by exposing a single [browserState] and handling
+ * user actions via [handleIntent]. This class manages tab creation, navigation history,
+ * persistence of session data through [BrowserTabRepository], and visual tab thumbnails.
+ *
+ * @property repository The data source used to persist and restore browser tabs across sessions.
+ * @property browserState An observable [StateFlow] representing the current UI state of the browser.
+ * @property thumbnails A map of tab IDs to [Bitmap] previews used for the tab switcher interface.
+ */
 @HiltViewModel
 class BrowserViewModel @Inject constructor(private val repository: BrowserTabRepository) :
     ViewModel() {

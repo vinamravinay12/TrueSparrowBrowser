@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,10 +19,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.rivi.truesparrowbrowser.R
-import androidx.compose.material3.MaterialTheme
 import com.rivi.truesparrowbrowser.ui.theme.CardBackground
 import com.rivi.truesparrowbrowser.ui.theme.TextSecondary
 
+/**
+ * A full-screen composable that displays an error state when a page fails to load.
+ *
+ * This screen features an error icon, a descriptive message suggesting a connection check,
+ * and a retry button to trigger a reload attempt.
+ *
+ * @param onRetry Callback invoked when the user clicks the "Retry" button.
+ * @param modifier The [Modifier] to be applied to the root layout of this screen.
+ */
 @Composable
 fun ErrorScreen(
     onRetry: () -> Unit,
