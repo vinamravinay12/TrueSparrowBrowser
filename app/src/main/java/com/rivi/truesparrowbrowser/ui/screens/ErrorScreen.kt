@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.rivi.truesparrowbrowser.R
-import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import androidx.compose.material3.MaterialTheme
 import com.rivi.truesparrowbrowser.ui.theme.CardBackground
 import com.rivi.truesparrowbrowser.ui.theme.TextSecondary
 
@@ -41,11 +41,11 @@ fun ErrorScreen(
             modifier = Modifier.size(112.dp)
         )
         Spacer(Modifier.height(16.dp))
-        Text("This page couldn't load", style = AppTextStyle.errorTitle)
+        Text("This page couldn't load", style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.height(4.dp))
         Text(
             "Check your connection and try again.",
-            style = AppTextStyle.body, color = TextSecondary
+            style = MaterialTheme.typography.bodySmall, color = TextSecondary
         )
         Spacer(Modifier.height(20.dp))
         Button(

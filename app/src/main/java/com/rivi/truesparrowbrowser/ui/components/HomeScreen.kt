@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.R
 import com.rivi.truesparrowbrowser.domain.models.Shortcut
-import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import androidx.compose.material3.MaterialTheme
 import com.rivi.truesparrowbrowser.ui.theme.BrandBlue
 import com.rivi.truesparrowbrowser.ui.theme.CardBackground
 import com.rivi.truesparrowbrowser.ui.theme.OnBadge
@@ -76,7 +76,7 @@ fun HomeScreen(
         }
 
         Spacer(Modifier.height(12.dp))
-        Text("Sparrow Search", style = AppTextStyle.homeTitle)
+        Text("Sparrow Search", style = MaterialTheme.typography.headlineSmall)
 
         Spacer(Modifier.height(20.dp))
 
@@ -90,7 +90,7 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            style = AppTextStyle.sectionLabel,
+            style = MaterialTheme.typography.labelMedium,
             color = TextSecondary
         )
 
@@ -108,7 +108,7 @@ fun HomeScreen(
 
         Text(
             "Any URL or search term can be entered — the browser is not locked to a single site.",
-            style = AppTextStyle.caption,
+            style = MaterialTheme.typography.bodySmall,
             color = BrandBlue,
             textAlign = TextAlign.Center
         )
@@ -144,8 +144,8 @@ private fun ShortcutCard(
                 Text(shortcut.badge, color = OnBadge, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(8.dp))
-            Text(shortcut.title, style = AppTextStyle.cardTitle)
-            Text(shortcut.subtitle, style = AppTextStyle.tiny, color = TextSecondary)
+            Text(shortcut.title, style = MaterialTheme.typography.titleMedium)
+            Text(shortcut.subtitle, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
         }
     }
 }

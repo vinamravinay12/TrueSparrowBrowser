@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import androidx.compose.material3.MaterialTheme
 import com.rivi.truesparrowbrowser.ui.theme.CardBackground
 import com.rivi.truesparrowbrowser.ui.theme.SkeletonColor
 import com.rivi.truesparrowbrowser.ui.theme.TextSecondary
@@ -59,7 +59,7 @@ fun LoadingScreen(url: String, modifier: Modifier = Modifier) {
         ) {
             CircularProgressIndicator(strokeWidth = 3.dp, modifier = Modifier.size(36.dp))
             Spacer(Modifier.height(8.dp))
-            Text("Loading $host…", color = TextSecondary, style = AppTextStyle.caption)
+            Text("Loading $host…", color = TextSecondary, style = MaterialTheme.typography.bodySmall)
         }
 
         Spacer(Modifier.height(24.dp))

@@ -20,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import androidx.compose.material3.MaterialTheme
 import com.rivi.truesparrowbrowser.ui.theme.NewTabCardBackground
 import com.rivi.truesparrowbrowser.ui.theme.TextSecondary
 
@@ -53,7 +53,7 @@ fun NewTabCard(onClick: () -> Unit) {
                 modifier = Modifier.size(32.dp), tint = TextSecondary
             )
             Spacer(Modifier.height(4.dp))
-            Text("New tab", style = AppTextStyle.caption, color = TextSecondary)
+            Text("New tab", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
         }
     }
 }

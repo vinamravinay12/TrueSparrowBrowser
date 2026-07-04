@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import androidx.compose.material3.MaterialTheme
 import com.rivi.truesparrowbrowser.ui.theme.TextSecondary
 
 /**
@@ -62,7 +62,7 @@ fun BrowserBottomBar(
             ) {
                 Text(
                     text = tabCount.toString(),
-                    style = AppTextStyle.badge
+                    style = MaterialTheme.typography.labelLarge
                 )
 
             }

@@ -34,7 +34,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.data.models.BrowserTab
-import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
 import com.rivi.truesparrowbrowser.ui.theme.BrandBlue
 import com.rivi.truesparrowbrowser.ui.theme.CardBackground
 import com.rivi.truesparrowbrowser.ui.theme.OnBadge
@@ -85,7 +84,7 @@ fun TabCard(
                 ) {
                     Text(
                         tab.title.firstOrNull()?.uppercase() ?: "T",
-                        color = OnBadge, style = AppTextStyle.badgeSmall
+                        color = OnBadge, style = MaterialTheme.typography.labelSmall
                     )
                 }
                 Text(
@@ -93,7 +92,7 @@ fun TabCard(
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 6.dp),
-                    style = AppTextStyle.tiny, maxLines = 1,
+                    style = MaterialTheme.typography.labelSmall, maxLines = 1,
                     overflow = TextOverflow.Ellipsis, color = TextSecondary
                 )
                 IconButton(onClick = onClose, modifier = Modifier.size(18.dp)) {
@@ -120,8 +119,8 @@ fun TabCard(
                             modifier = Modifier.fillMaxSize()
                         )
 
-                    tab.currentUrl.isBlank() -> Text("Home", color = TextSecondary, style = AppTextStyle.caption)
-                    else -> Text(tab.title, color = TextSecondary, style = AppTextStyle.captionSmall, maxLines = 1)
+                    tab.currentUrl.isBlank() -> Text("Home", color = TextSecondary, style = MaterialTheme.typography.bodySmall)
+                    else -> Text(tab.title, color = TextSecondary, style = MaterialTheme.typography.bodySmall, maxLines = 1)
                 }
 
 

@@ -37,7 +37,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.R
-import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import androidx.compose.material3.MaterialTheme
 import com.rivi.truesparrowbrowser.ui.theme.CardBackground
 import com.rivi.truesparrowbrowser.ui.theme.IconDisabled
 import com.rivi.truesparrowbrowser.ui.theme.SearchBarBackground
@@ -117,7 +117,7 @@ fun SearchBarCard(
                 value = searchValue,
                 onValueChange = onSearchValueChange,
                 singleLine = true,
-                textStyle = AppTextStyle.addressText.copy(color = TextPrimary),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = TextPrimary),
                 cursorBrush = SolidColor(TextPrimary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
                 keyboardActions = KeyboardActions(
@@ -144,7 +144,7 @@ fun SearchBarCard(
                         contentAlignment = Alignment.CenterStart
                     ) {
                         if (searchValue.text.isBlank() && isFocused.not()) {
-                            Text("Search or type URL", color = TextSecondary, style = AppTextStyle.addressText)
+                            Text("Search or type URL", color = TextSecondary, style = MaterialTheme.typography.bodyLarge)
                         }
                         inner()
                     }

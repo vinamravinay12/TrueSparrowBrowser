@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Upsert
 import com.rivi.truesparrowbrowser.data.db.entities.TabEntity
 
 
@@ -15,8 +14,6 @@ interface TabDao {
     @Query("SELECT * FROM tabs")
     suspend fun getAllTabs(): List<TabEntity>
 
-    @Upsert
-    suspend fun insertTab(tab: TabEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(tabs: List<TabEntity>)
