@@ -70,7 +70,7 @@ fun WebViewScreen(
         factory = { webView },
         modifier = modifier,
         update = {
-            if (pageUrl.isNotBlank() && pageUrl != lastLoadedUrl) {
+            if (pageUrl.isNotBlank() && pageUrl != lastLoadedUrl && pageUrl != webView.url) {
                 lastLoadedUrl = pageUrl
                 it.loadUrl(pageUrl)
             }
