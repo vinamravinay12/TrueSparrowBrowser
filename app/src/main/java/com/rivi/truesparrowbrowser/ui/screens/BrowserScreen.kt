@@ -163,6 +163,9 @@ fun BrowserContent(
                         viewModel.handleIntent(BrowserIntent.NavStateChanged(back, fwd))
                     }
                 )
+                if (state.isLoading) {
+                    LoadingScreen(url = state.searchQuery, modifier = Modifier.fillMaxSize())
+                }
                 if (state.isPageError) {
                     ErrorScreen(onRetry = { webView?.reload() })
                 }
