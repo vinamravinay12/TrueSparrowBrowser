@@ -24,11 +24,13 @@ data class BrowserState(
     val activeTab: BrowserTab = tabs.firstOrNull { it.id == activeTabId } ?: tabs.first()
     val searchQuery: String = activeTab.currentUrl
     val canGoBack: Boolean
-        get() = if (showingHome) false
-        else webCanGoBack || activeTab.currentUrl.isNotBlank()
+        get() = showingHome.not() && activeTab.currentUrl.isNotBlank()
     val canGoForward: Boolean
-        get() = if (showingHome) activeTab.currentUrl.isNotBlank()
-        else webCanGoForward
+        get() = when {
+            activeTab.currentUrl.isBlank() -> false
+            showingHome -> true
+            else -> webCanGoForward
+        }
 }
 
 sealed interface BrowserIntent {
