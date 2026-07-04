@@ -24,10 +24,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.domain.models.BrowserIntent
 import com.rivi.truesparrowbrowser.ui.components.BrowserBottomBar
 import com.rivi.truesparrowbrowser.ui.components.HomeScreen
@@ -112,8 +110,7 @@ fun BrowserContent(
             hasUrl = state.searchQuery.isNotBlank() && state.showingHome.not(),
             isLoading = state.isLoading,
             moveBack = {
-                val wv = webView
-                if (wv != null && wv.canGoBack()) wv.goBack()
+                if (webView != null && webView?.canGoBack() == true) webView?.goBack()
                 else viewModel.handleIntent(BrowserIntent.ShowHomeOverlay)
             },
             moveForward = {
