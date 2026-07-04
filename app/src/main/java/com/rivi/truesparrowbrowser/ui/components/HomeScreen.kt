@@ -30,6 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.R
 import com.rivi.truesparrowbrowser.domain.models.Shortcut
+import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import com.rivi.truesparrowbrowser.ui.theme.BrandBlue
+import com.rivi.truesparrowbrowser.ui.theme.CardBackground
+import com.rivi.truesparrowbrowser.ui.theme.OnBadge
+import com.rivi.truesparrowbrowser.ui.theme.TextSecondary
 
 /**
  * Represents the home screen of the browser, providing a search interface and quick-access shortcuts.
@@ -58,7 +63,7 @@ fun HomeScreen(
             modifier = Modifier
                 .size(56.dp)
                 .clip(CircleShape)
-                .background(Color(0xFF4285F4)),
+                .background(BrandBlue),
             contentAlignment = Alignment.Center
         ) {
             Image(
@@ -71,7 +76,7 @@ fun HomeScreen(
         }
 
         Spacer(Modifier.height(12.dp))
-        Text("Sparrow Search", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        Text("Sparrow Search", style = AppTextStyle.homeTitle)
 
         Spacer(Modifier.height(20.dp))
 
@@ -85,9 +90,8 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.Gray
+            style = AppTextStyle.sectionLabel,
+            color = TextSecondary
         )
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -104,8 +108,8 @@ fun HomeScreen(
 
         Text(
             "Any URL or search term can be entered — the browser is not locked to a single site.",
-            fontSize = 12.sp,
-            color = Color(0xFF4285F4),
+            style = AppTextStyle.caption,
+            color = BrandBlue,
             textAlign = TextAlign.Center
         )
     }
@@ -121,7 +125,7 @@ private fun ShortcutCard(
     Card(
         modifier = modifier.clickable(onClick = onClick),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = CardBackground),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
@@ -137,11 +141,11 @@ private fun ShortcutCard(
                     .background(shortcut.badgeColor),
                 contentAlignment = Alignment.Center
             ) {
-                Text(shortcut.badge, color = Color.White, fontWeight = FontWeight.Bold)
+                Text(shortcut.badge, color = OnBadge, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(8.dp))
-            Text(shortcut.title, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-            Text(shortcut.subtitle, fontSize = 10.sp, color = Color.Gray)
+            Text(shortcut.title, style = AppTextStyle.cardTitle)
+            Text(shortcut.subtitle, style = AppTextStyle.tiny, color = TextSecondary)
         }
     }
 }

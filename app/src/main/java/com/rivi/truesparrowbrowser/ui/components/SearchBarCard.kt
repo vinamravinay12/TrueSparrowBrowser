@@ -37,6 +37,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.R
+import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import com.rivi.truesparrowbrowser.ui.theme.CardBackground
+import com.rivi.truesparrowbrowser.ui.theme.IconDisabled
+import com.rivi.truesparrowbrowser.ui.theme.SearchBarBackground
+import com.rivi.truesparrowbrowser.ui.theme.TextPrimary
+import com.rivi.truesparrowbrowser.ui.theme.TextSecondary
 
 /**
  * A custom search bar component that provides browser navigation controls and a text input field.
@@ -74,7 +80,7 @@ fun SearchBarCard(
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8EAF0))
+        colors = CardDefaults.cardColors(containerColor = SearchBarBackground)
     ) {
         Row(
             modifier = Modifier
@@ -89,7 +95,7 @@ fun SearchBarCard(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_back),
-                    tint = if (canGoBack) Color.Black else Color.LightGray,
+                    tint = if (canGoBack) TextPrimary else IconDisabled,
                     contentDescription = "Move back"
                 )
             }
@@ -101,7 +107,7 @@ fun SearchBarCard(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_next),
-                    tint = if (canGoForward) Color.Black else Color.LightGray,
+                    tint = if (canGoForward) TextPrimary else IconDisabled,
                     contentDescription = "Move forward"
                 )
             }
@@ -111,11 +117,8 @@ fun SearchBarCard(
                 value = searchValue,
                 onValueChange = onSearchValueChange,
                 singleLine = true,
-                textStyle = androidx.compose.ui.text.TextStyle(
-                    color = Color.Black,
-                    fontSize = 15.sp
-                ),
-                cursorBrush = SolidColor(Color.Black),
+                textStyle = AppTextStyle.addressText.copy(color = TextPrimary),
+                cursorBrush = SolidColor(TextPrimary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
                 keyboardActions = KeyboardActions(
                     onGo = {
@@ -128,7 +131,7 @@ fun SearchBarCard(
                     .weight(1f)
                     .height(40.dp)
                     .clip(RoundedCornerShape(20.dp))
-                    .background(Color.White)
+                    .background(CardBackground)
                     .padding(horizontal = 14.dp)
                     .onFocusChanged {
                         if (it.isFocused) {
@@ -141,7 +144,7 @@ fun SearchBarCard(
                         contentAlignment = Alignment.CenterStart
                     ) {
                         if (searchValue.text.isBlank() && isFocused.not()) {
-                            Text("Search or type URL", color = Color.Gray, fontSize = 15.sp)
+                            Text("Search or type URL", color = TextSecondary, style = AppTextStyle.addressText)
                         }
                         inner()
                     }
@@ -163,7 +166,7 @@ fun SearchBarCard(
                     painter = painterResource(
                         if (isLoading) R.drawable.ic_stop else R.drawable.ic_reload
                     ),
-                    tint = if (hasUrl) Color.Black else Color.LightGray,
+                    tint = if (hasUrl) TextPrimary else IconDisabled,
                     contentDescription = if (isLoading) "Stop" else "Reload"
                 )
             }

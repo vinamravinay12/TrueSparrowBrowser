@@ -3,7 +3,7 @@ package com.rivi.truesparrowbrowser.domain.models
 import com.rivi.truesparrowbrowser.data.models.BrowserTab
 
 data class BrowserState(
-    val tabs: List<BrowserTab> = listOf(BrowserTab()),   // always at least 1 tab
+    val tabs: List<BrowserTab> = listOf(BrowserTab()),
     val activeTabId: String = tabs.first().id,
     val isLoading: Boolean = false,
 

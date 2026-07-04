@@ -17,10 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import com.rivi.truesparrowbrowser.ui.theme.TextSecondary
 
 /**
  * A composable that represents the bottom navigation bar of the browser.
@@ -63,8 +62,7 @@ fun BrowserBottomBar(
             ) {
                 Text(
                     text = tabCount.toString(),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
+                    style = AppTextStyle.badge
                 )
 
             }
@@ -80,7 +78,7 @@ private fun Modifier.border(): Modifier {
     return this.then(
         border(
             width = 1.5.dp,
-            color = Color.Gray,
+            color = TextSecondary,
             shape = RoundedCornerShape(6.dp)
         )
     )

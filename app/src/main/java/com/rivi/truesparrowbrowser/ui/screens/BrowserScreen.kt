@@ -33,6 +33,7 @@ import com.rivi.truesparrowbrowser.ui.components.BrowserBottomBar
 import com.rivi.truesparrowbrowser.ui.components.HomeScreen
 import com.rivi.truesparrowbrowser.ui.components.LinearProgressBar
 import com.rivi.truesparrowbrowser.ui.components.SearchBarCard
+import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
 import com.rivi.truesparrowbrowser.ui.viewmodels.BrowserViewModel
 
 
@@ -101,8 +102,7 @@ fun BrowserContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 4.dp),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold
+            style = AppTextStyle.appBarTitle
         )
 
         SearchBarCard(

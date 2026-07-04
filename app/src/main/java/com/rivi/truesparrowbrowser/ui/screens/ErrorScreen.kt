@@ -15,12 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.R
+import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import com.rivi.truesparrowbrowser.ui.theme.CardBackground
+import com.rivi.truesparrowbrowser.ui.theme.TextSecondary
 
 @Composable
 fun ErrorScreen(
@@ -30,7 +30,7 @@ fun ErrorScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(CardBackground)
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -41,11 +41,11 @@ fun ErrorScreen(
             modifier = Modifier.size(112.dp)
         )
         Spacer(Modifier.height(16.dp))
-        Text("This page couldn't load", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text("This page couldn't load", style = AppTextStyle.errorTitle)
         Spacer(Modifier.height(4.dp))
         Text(
             "Check your connection and try again.",
-            fontSize = 13.sp, color = Color.Gray
+            style = AppTextStyle.body, color = TextSecondary
         )
         Spacer(Modifier.height(20.dp))
         Button(

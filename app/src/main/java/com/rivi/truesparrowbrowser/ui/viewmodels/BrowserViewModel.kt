@@ -3,7 +3,6 @@ package com.rivi.truesparrowbrowser.ui.viewmodels
 import android.graphics.Bitmap
 import android.webkit.WebView
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rivi.truesparrowbrowser.core.utils.SearchUtils.toUrlOrSearch
@@ -13,6 +12,9 @@ import com.rivi.truesparrowbrowser.domain.models.BrowserIntent
 import com.rivi.truesparrowbrowser.domain.models.BrowserState
 import com.rivi.truesparrowbrowser.domain.models.Shortcut
 import com.rivi.truesparrowbrowser.domain.repository.BrowserTabRepository
+import com.rivi.truesparrowbrowser.ui.theme.DailyNewsBadge
+import com.rivi.truesparrowbrowser.ui.theme.KotlinDocsBadge
+import com.rivi.truesparrowbrowser.ui.theme.WikipediaBadge
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,16 +37,16 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
             "en.wikipedia.org",
             "https://en.wikipedia.org",
             "W",
-            Color(0xFF111111)
+            WikipediaBadge
         ),
         Shortcut(
             "Daily News",
             "news.example.com",
             "https://news.google.com",
             "N",
-            Color(0xFFE53935)
+            DailyNewsBadge
         ),
-        Shortcut("Kotlin Docs", "kotlinlang.org", "https://kotlinlang.org", "K", Color(0xFF7F52FF))
+        Shortcut("Kotlin Docs", "kotlinlang.org", "https://kotlinlang.org", "K", KotlinDocsBadge)
     )
 
     init {

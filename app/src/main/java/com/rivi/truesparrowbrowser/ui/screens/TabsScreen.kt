@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.data.models.BrowserTab
 import com.rivi.truesparrowbrowser.ui.components.NewTabCard
 import com.rivi.truesparrowbrowser.ui.components.TabCard
+import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
 
 @Composable
 fun TabsScreen(
@@ -58,8 +59,7 @@ fun TabsScreen(
         ) {
             Text(
                 text = if (tabs.size == 1) "1 tab" else "${tabs.size} tabs",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
+                style = AppTextStyle.screenTitle,
                 modifier = Modifier.weight(1f)
             )
             IconButton(onClick = onNewTab) {

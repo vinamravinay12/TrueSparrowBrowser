@@ -17,9 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import com.rivi.truesparrowbrowser.ui.theme.CardBackground
+import com.rivi.truesparrowbrowser.ui.theme.SkeletonColor
+import com.rivi.truesparrowbrowser.ui.theme.TextSecondary
 
 @Composable
 fun LoadingScreen(url: String, modifier: Modifier = Modifier) {
@@ -30,7 +32,7 @@ fun LoadingScreen(url: String, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(CardBackground)
             .padding(16.dp)
     ) {
         SkeletonLine(0.9f)
@@ -46,7 +48,7 @@ fun LoadingScreen(url: String, modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .height(120.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(Color(0xFFE8EAF0))
+                .background(SkeletonColor)
         )
 
         Spacer(Modifier.height(48.dp))
@@ -57,7 +59,7 @@ fun LoadingScreen(url: String, modifier: Modifier = Modifier) {
         ) {
             CircularProgressIndicator(strokeWidth = 3.dp, modifier = Modifier.size(36.dp))
             Spacer(Modifier.height(8.dp))
-            Text("Loading $host…", color = Color.Gray, fontSize = 12.sp)
+            Text("Loading $host…", color = TextSecondary, style = AppTextStyle.caption)
         }
 
         Spacer(Modifier.height(24.dp))
@@ -72,6 +74,6 @@ private fun SkeletonLine(widthFraction: Float) {
             .fillMaxWidth(widthFraction)
             .height(14.dp)
             .clip(RoundedCornerShape(4.dp))
-            .background(Color(0xFFE8EAF0))
+            .background(SkeletonColor)
     )
 }

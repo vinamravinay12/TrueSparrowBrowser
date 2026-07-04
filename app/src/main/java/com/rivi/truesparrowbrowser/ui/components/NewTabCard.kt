@@ -19,9 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.rivi.truesparrowbrowser.ui.theme.AppTextStyle
+import com.rivi.truesparrowbrowser.ui.theme.NewTabCardBackground
+import com.rivi.truesparrowbrowser.ui.theme.TextSecondary
 
 
 /**
@@ -40,7 +41,7 @@ fun NewTabCard(onClick: () -> Unit) {
             .aspectRatio(0.72f)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F6F8))
+        colors = CardDefaults.cardColors(containerColor = NewTabCardBackground)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -49,10 +50,10 @@ fun NewTabCard(onClick: () -> Unit) {
         ) {
             Icon(
                 Icons.Default.Add, contentDescription = "New tab",
-                modifier = Modifier.size(32.dp), tint = Color.Gray
+                modifier = Modifier.size(32.dp), tint = TextSecondary
             )
             Spacer(Modifier.height(4.dp))
-            Text("New tab", fontSize = 12.sp, color = Color.Gray)
+            Text("New tab", style = AppTextStyle.caption, color = TextSecondary)
         }
     }
 }
