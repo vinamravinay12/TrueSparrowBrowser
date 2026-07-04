@@ -117,7 +117,10 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
             is BrowserIntent.NewTab -> {
                 val tab = BrowserTab()
                 _browserState.update {
-                    it.copy(tabs = it.tabs + tab, activeTabId = tab.id)
+                    it.copy(
+                        tabs = it.tabs + tab, activeTabId = tab.id,
+                        showTabSwitcher = false
+                    )
                 }
                 persist()
 
@@ -138,7 +141,7 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
 
             is BrowserIntent.SwitchTab -> {
                 _browserState.update {
-                    it.copy(activeTabId = intent.tabId)
+                    it.copy(activeTabId = intent.tabId, showTabSwitcher = false)
                 }
                 persist()
             }
@@ -154,6 +157,21 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
 
             is BrowserIntent.OpenTabs -> _browserState.update {
                 it.copy(showTabSwitcher = true)
+            }
+
+            is BrowserIntent.UrlChanged -> {
+                updateActiveTab { tab ->
+                    if (tab.currentIndex >= 0 && tab.history[tab.currentIndex] == intent.url) tab
+                    else {
+                        val newHistory = tab.history.take(tab.currentIndex + 1) + intent.url
+                        tab.copy(
+                            history = newHistory,
+                            currentIndex = newHistory.lastIndex,
+                            title = intent.url
+                        )
+                    }
+                }
+                persist()
             }
 
             else -> {}

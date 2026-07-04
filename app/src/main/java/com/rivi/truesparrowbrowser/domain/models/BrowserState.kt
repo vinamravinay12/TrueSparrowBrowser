@@ -19,8 +19,8 @@ data class BrowserState(
 ) {
     val activeTab: BrowserTab = tabs.firstOrNull { it.id == activeTabId } ?: tabs.first()
     val searchQuery: String = activeTab.currentUrl
-    val canGoBack: Boolean get() = currentIndex > 0
-    val canGoForward: Boolean get() = currentIndex < history.size - 1
+    val canGoBack: Boolean get() = activeTab.canGoBack
+    val canGoForward: Boolean get() = activeTab.canGoForward
 }
 
 sealed interface BrowserIntent {
@@ -36,5 +36,6 @@ sealed interface BrowserIntent {
 
     data class SwitchTab(val tabId: String) : BrowserIntent
     data class CloseTab(val tabId: String) : BrowserIntent
+    data class UrlChanged(val url: String) : BrowserIntent
 
 }

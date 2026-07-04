@@ -1,4 +1,4 @@
-package com.rivi.truesparrowbrowser.ui.components
+package com.rivi.truesparrowbrowser.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
@@ -39,6 +39,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.domain.models.BrowserIntent
+import com.rivi.truesparrowbrowser.ui.components.BrowserBottomBar
+import com.rivi.truesparrowbrowser.ui.components.HomeScreen
+import com.rivi.truesparrowbrowser.ui.components.LinearProgressBar
 import com.rivi.truesparrowbrowser.ui.viewmodels.BrowserViewModel
 
 
@@ -55,10 +58,21 @@ fun BrowserScreen(viewModel: BrowserViewModel) {
             onTabsClick = { viewModel.handleIntent(BrowserIntent.OpenTabs) }
         )
     }) { innerPadding ->
-        BrowserContent(
-            viewModel = viewModel,
-            modifier = Modifier.padding(innerPadding)
-        )
+        if (state.value.showTabSwitcher) {
+            TabsScreen(
+                tabs = state.value.tabs,
+                activeTabId = state.value.activeTabId,
+                onSelectTab = { viewModel.handleIntent(BrowserIntent.SwitchTab(it)) },
+                onCloseTab = { viewModel.handleIntent(BrowserIntent.CloseTab(it)) },
+                onNewTab = { viewModel.handleIntent(BrowserIntent.NewTab) },
+                modifier = Modifier.padding(innerPadding)
+            )
+        } else {
+            BrowserContent(
+                viewModel = viewModel,
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
     }
 }
 
@@ -182,7 +196,8 @@ fun BrowserContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                onProgressChanged = { viewModel.handleIntent(BrowserIntent.UpdateProgress(it)) }
+                onProgressChanged = { viewModel.handleIntent(BrowserIntent.UpdateProgress(it)) },
+                onUrlChanged = { viewModel.handleIntent(BrowserIntent.UrlChanged(it)) }
             )
         }
 

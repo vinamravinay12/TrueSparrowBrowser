@@ -1,4 +1,4 @@
-package com.rivi.truesparrowbrowser.ui.components
+package com.rivi.truesparrowbrowser.ui.screens
 
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -12,14 +12,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
-fun WebViewScreen(pageUrl: String, modifier: Modifier, onProgressChanged: (Int) -> Unit = {}) {
+fun WebViewScreen(
+    pageUrl: String, modifier: Modifier, onProgressChanged: (Int) -> Unit = {},
+    onUrlChanged: (String) -> Unit
+) {
     var lastLoadedUrl by rememberSaveable { mutableStateOf<String?>(null) }
     AndroidView(
         modifier = modifier,
         factory = { context ->
             return@AndroidView WebView(context).apply {
                 settings.javaScriptEnabled = true
-                webViewClient = WebViewClient()
+                webViewClient = object : WebViewClient() {
+                    override fun doUpdateVisitedHistory(
+                        view: WebView?,
+                        url: String?,
+                        isReload: Boolean
+                    ) {
+                        super.doUpdateVisitedHistory(view, url, isReload)
+                        if (url != lastLoadedUrl) {
+                            lastLoadedUrl = url
+                            url?.let { onUrlChanged(it) }
+                        }
+                    }
+                }
 
                 settings.loadWithOverviewMode = true
                 settings.useWideViewPort = true
