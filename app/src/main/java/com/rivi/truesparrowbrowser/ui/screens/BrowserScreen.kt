@@ -203,8 +203,13 @@ fun BrowserContent(
                     .weight(1f),
                 onProgressChanged = { viewModel.handleIntent(BrowserIntent.UpdateProgress(it)) },
                 onUrlChanged = { viewModel.handleIntent(BrowserIntent.UrlChanged(it)) },
-                onCreated = { webView = it }
+                onCreated = { webView = it },
+                onError = { viewModel.handleIntent(BrowserIntent.PageError) },
+                onPageStarted = { viewModel.handleIntent(BrowserIntent.ClearError) }
             )
+            if (state.isPageError) {
+                ErrorScreen(onRetry = { webView?.reload() })
+            }
         }
 
 

@@ -1,6 +1,9 @@
 package com.rivi.truesparrowbrowser.ui.screens
 
+import android.graphics.Bitmap
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.runtime.Composable
@@ -15,7 +18,9 @@ import androidx.compose.ui.viewinterop.AndroidView
 fun WebViewScreen(
     pageUrl: String, modifier: Modifier, onProgressChanged: (Int) -> Unit = {},
     onUrlChanged: (String) -> Unit = {},
-    onCreated: (WebView) -> Unit = {}
+    onCreated: (WebView) -> Unit = {},
+    onError: () -> Unit = {},
+    onPageStarted: () -> Unit = {}
 ) {
     var lastLoadedUrl by rememberSaveable { mutableStateOf<String?>(null) }
     AndroidView(
@@ -24,11 +29,27 @@ fun WebViewScreen(
             return@AndroidView WebView(context).apply {
                 settings.javaScriptEnabled = true
                 webViewClient = object : WebViewClient() {
+
+                    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                        super.onPageStarted(view, url, favicon)
+                        onPageStarted()
+                    }
+
+                    override fun onReceivedError(
+                        view: WebView?,
+                        request: WebResourceRequest?,
+                        error: WebResourceError?
+                    ) {
+                        super.onReceivedError(view, request, error)
+                        if (request?.isForMainFrame == true) onError()
+                    }
+
                     override fun doUpdateVisitedHistory(
                         view: WebView?,
                         url: String?,
                         isReload: Boolean
                     ) {
+
                         super.doUpdateVisitedHistory(view, url, isReload)
                         if (url != lastLoadedUrl) {
                             lastLoadedUrl = url

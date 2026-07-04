@@ -180,7 +180,12 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
 
             is BrowserIntent.Stop -> _browserState.update { it.copy(isLoading = false) }
 
-            else -> {}
+            is BrowserIntent.PageError ->
+                _browserState.update { it.copy(isPageError = true, isLoading = false) }
+
+            is BrowserIntent.ClearError ->
+                _browserState.update { it.copy(isPageError = false) }
+
         }
     }
 

@@ -15,7 +15,8 @@ data class BrowserState(
     val history: List<String> = emptyList(),
     val currentIndex: Int = -1,
     val homeTabs: List<Shortcut> = emptyList(),
-    val showTabSwitcher: Boolean = false
+    val showTabSwitcher: Boolean = false,
+    val isPageError: Boolean = false,
 ) {
     val activeTab: BrowserTab = tabs.firstOrNull { it.id == activeTabId } ?: tabs.first()
     val searchQuery: String = activeTab.currentUrl
@@ -37,5 +38,7 @@ sealed interface BrowserIntent {
     data class SwitchTab(val tabId: String) : BrowserIntent
     data class CloseTab(val tabId: String) : BrowserIntent
     data class UrlChanged(val url: String) : BrowserIntent
+    data object PageError : BrowserIntent
+    data object ClearError : BrowserIntent
 
 }
