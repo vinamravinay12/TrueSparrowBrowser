@@ -18,7 +18,8 @@ fun WebViewScreen(
     onUrlChanged: (String) -> Unit = {},
     onCreated: (WebView) -> Unit = {},
     onError: () -> Unit = {},
-    onPageStarted: () -> Unit = {}
+    onPageStarted: () -> Unit = {},
+    onNavStateChanged: (canGoBack: Boolean, canGoForward: Boolean) -> Unit = { _, _ -> }
 ) {
     val context = LocalContext.current
     var lastLoadedUrl by remember { mutableStateOf<String?>(null) }
@@ -28,16 +29,19 @@ fun WebViewScreen(
             settings.javaScriptEnabled = true
             settings.loadWithOverviewMode = true
             settings.useWideViewPort = true
-            settings.setSupportZoom(false)
+            settings.setSupportZoom(true)
             webViewClient = object : WebViewClient() {
                 override fun onPageStarted(v: WebView?, u: String?, f: android.graphics.Bitmap?) {
-                    super.onPageStarted(v, u, f); onPageStarted()
+                    super.onPageStarted(v, u, f)
+                    onPageStarted()
                 }
 
-                override fun doUpdateVisitedHistory(v: WebView, u: String, r: Boolean) {
-                    super.doUpdateVisitedHistory(v, u, r)
-                    if (u != lastLoadedUrl) {
-                        lastLoadedUrl = u; onUrlChanged(u)
+                override fun doUpdateVisitedHistory(view: WebView, url: String, r: Boolean) {
+                    super.doUpdateVisitedHistory(view, url, r)
+                    if (url != lastLoadedUrl) {
+                        lastLoadedUrl = url
+                        onUrlChanged(url)
+                        onNavStateChanged(view.canGoBack(), view.canGoForward())
                     }
                 }
 

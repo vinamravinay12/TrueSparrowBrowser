@@ -95,6 +95,7 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
                         )
                     }
                 }
+                _browserState.update { it.copy(showingHome = false, isPageError = false) }
 
             }
 
@@ -115,7 +116,13 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
                     tab.copy(
                         currentIndex = -1
                     )
-
+                }
+                _browserState.update {
+                    it.copy(
+                        showingHome = false,
+                        webCanGoBack = false,
+                        webCanGoForward = false
+                    )
                 }
             }
 
@@ -123,8 +130,10 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
                 val tab = BrowserTab()
                 _browserState.update {
                     it.copy(
-                        tabs = it.tabs + tab, activeTabId = tab.id,
-                        showTabSwitcher = false
+                        tabs = it.tabs + tab,
+                        activeTabId = tab.id,
+                        showTabSwitcher = false,
+                        showingHome = false
                     )
                 }
                 persist()
@@ -146,7 +155,11 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
 
             is BrowserIntent.SwitchTab -> {
                 _browserState.update {
-                    it.copy(activeTabId = intent.tabId, showTabSwitcher = false)
+                    it.copy(
+                        activeTabId = intent.tabId,
+                        showTabSwitcher = false,
+                        showingHome = false
+                    )
                 }
                 persist()
             }
@@ -179,9 +192,6 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
                 persist()
             }
 
-            is BrowserIntent.Reload -> {
-
-            }
 
             is BrowserIntent.Stop -> _browserState.update { it.copy(isLoading = false) }
 
@@ -190,6 +200,31 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
 
             is BrowserIntent.ClearError ->
                 _browserState.update { it.copy(isPageError = false) }
+
+            is BrowserIntent.NavStateChanged -> _browserState.update {
+                it.copy(webCanGoBack = intent.canGoBack, webCanGoForward = intent.canGoForward)
+            }
+
+            is BrowserIntent.ShowHomeOverlay ->
+                _browserState.update { it.copy(showingHome = true) }
+
+            is BrowserIntent.LeaveHome ->
+                _browserState.update { it.copy(showingHome = false) }
+
+            is BrowserIntent.CloseAllTabs -> {
+                val tab = BrowserTab()
+                _browserState.update {
+                    it.copy(
+                        tabs = listOf(tab),
+                        activeTabId = tab.id,
+                        showTabSwitcher = false,
+                        showingHome = false
+                    )
+                }
+                thumbnails.clear()
+                persist()
+
+            }
 
         }
     }

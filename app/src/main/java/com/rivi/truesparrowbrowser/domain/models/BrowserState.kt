@@ -17,18 +17,24 @@ data class BrowserState(
     val homeTabs: List<Shortcut> = emptyList(),
     val showTabSwitcher: Boolean = false,
     val isPageError: Boolean = false,
+    val webCanGoBack: Boolean = false,
+    val webCanGoForward: Boolean = false,
+    val showingHome: Boolean = false
 ) {
     val activeTab: BrowserTab = tabs.firstOrNull { it.id == activeTabId } ?: tabs.first()
     val searchQuery: String = activeTab.currentUrl
-    val canGoBack: Boolean get() = activeTab.canGoBack
-    val canGoForward: Boolean get() = activeTab.canGoForward
+    val canGoBack: Boolean
+        get() = if (showingHome) false
+        else webCanGoBack || activeTab.currentUrl.isNotBlank()
+    val canGoForward: Boolean
+        get() = if (showingHome) activeTab.currentUrl.isNotBlank()
+        else webCanGoForward
 }
 
 sealed interface BrowserIntent {
     data object MoveBack : BrowserIntent
     data class SearchAddress(val searchText: String) : BrowserIntent
     data object MoveForward : BrowserIntent
-    data object Reload : BrowserIntent
     data object Stop : BrowserIntent
     data object GoHome : BrowserIntent
     data object NewTab : BrowserIntent
@@ -40,5 +46,10 @@ sealed interface BrowserIntent {
     data class UrlChanged(val url: String) : BrowserIntent
     data object PageError : BrowserIntent
     data object ClearError : BrowserIntent
+    data class NavStateChanged(val canGoBack: Boolean, val canGoForward: Boolean) : BrowserIntent
+    data object ShowHomeOverlay : BrowserIntent
+    data object LeaveHome : BrowserIntent
+
+    data object CloseAllTabs : BrowserIntent
 
 }
