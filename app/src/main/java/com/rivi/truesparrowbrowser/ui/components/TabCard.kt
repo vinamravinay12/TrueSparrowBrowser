@@ -1,6 +1,8 @@
 package com.rivi.truesparrowbrowser.ui.components
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -26,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +39,8 @@ import com.rivi.truesparrowbrowser.data.models.BrowserTab
 fun TabCard(
     tab: BrowserTab, isActive: Boolean,
     onSelect: () -> Unit,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    thumbnail: Bitmap?
 ) {
     Card(
         modifier = Modifier
@@ -89,16 +94,23 @@ fun TabCard(
                     .background(Color(0xFFEDEFF3)),
                 contentAlignment = Alignment.Center
             ) {
-                if (tab.currentUrl.isBlank()) {
-                    Text("Home", color = Color.Gray, fontSize = 12.sp)
+                when {
+                    tab.currentUrl.isNotBlank() && thumbnail != null ->
+                        Image(
+                            bitmap = thumbnail.asImageBitmap(),
+                            contentDescription = "Tab page image",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+
+                    tab.currentUrl.isBlank() -> Text("Home", color = Color.Gray, fontSize = 12.sp)
+                    else -> Text(tab.title, color = Color.Gray, fontSize = 11.sp, maxLines = 1)
                 }
+
+
             }
 
-            Text(
-                text = tab.title,
-                modifier = Modifier.padding(8.dp),
-                fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis
-            )
+
         }
     }
 }

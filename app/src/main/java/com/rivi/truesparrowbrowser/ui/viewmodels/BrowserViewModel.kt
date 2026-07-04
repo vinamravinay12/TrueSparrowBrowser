@@ -1,9 +1,13 @@
 package com.rivi.truesparrowbrowser.ui.viewmodels
 
+import android.graphics.Bitmap
+import android.webkit.WebView
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rivi.truesparrowbrowser.core.utils.SearchUtils.toUrlOrSearch
+import com.rivi.truesparrowbrowser.core.utils.captureThumbnail
 import com.rivi.truesparrowbrowser.data.models.BrowserTab
 import com.rivi.truesparrowbrowser.domain.models.BrowserIntent
 import com.rivi.truesparrowbrowser.domain.models.BrowserState
@@ -23,6 +27,7 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
 
     private val _browserState = MutableStateFlow(BrowserState())
     val browserState: StateFlow<BrowserState> = _browserState.asStateFlow()
+    val thumbnails = mutableStateMapOf<String, Bitmap>()
 
     private val defaultShortcuts = listOf(
         Shortcut(
@@ -187,6 +192,10 @@ class BrowserViewModel @Inject constructor(private val repository: BrowserTabRep
                 _browserState.update { it.copy(isPageError = false) }
 
         }
+    }
+
+    fun captureThumbnail(tabId: String, webView: WebView) {
+        webView.captureThumbnail()?.let { thumbnails[tabId] = it }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.rivi.truesparrowbrowser.ui.screens
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,7 @@ import com.rivi.truesparrowbrowser.ui.components.TabCard
 fun TabsScreen(
     tabs: List<BrowserTab>,
     activeTabId: String,
+    thumbnails: Map<String, Bitmap>,
     onSelectTab: (String) -> Unit,
     onNewTab: () -> Unit,
     onCloseTab: (String) -> Unit,
@@ -69,6 +71,7 @@ fun TabsScreen(
                 TabCard(
                     tab = tab,
                     isActive = tab.id == activeTabId,
+                    thumbnail = thumbnails[tab.id],
                     onSelect = { onSelectTab(tab.id) },
                     onClose = { onCloseTab(tab.id) }
                 )

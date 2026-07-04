@@ -47,14 +47,17 @@ import com.rivi.truesparrowbrowser.ui.viewmodels.BrowserViewModel
 @Composable
 fun BrowserScreen(viewModel: BrowserViewModel) {
     val state = viewModel.browserState.collectAsState()
-
+    var webView by remember { mutableStateOf<WebView?>(null) }
     Scaffold(bottomBar = {
         BrowserBottomBar(
             tabCount = state.value.tabs.size,
             onHomeClick = { viewModel.handleIntent(BrowserIntent.GoHome) },
             onNewTabClick = { viewModel.handleIntent(BrowserIntent.NewTab) },
             onSettingsClick = { },
-            onTabsClick = { viewModel.handleIntent(BrowserIntent.OpenTabs) }
+            onTabsClick = {
+                webView?.let { viewModel.captureThumbnail(state.value.activeTabId, it) }
+                viewModel.handleIntent(BrowserIntent.OpenTabs)
+            }
         )
     }) { innerPadding ->
         if (state.value.showTabSwitcher) {
@@ -64,11 +67,13 @@ fun BrowserScreen(viewModel: BrowserViewModel) {
                 onSelectTab = { viewModel.handleIntent(BrowserIntent.SwitchTab(it)) },
                 onCloseTab = { viewModel.handleIntent(BrowserIntent.CloseTab(it)) },
                 onNewTab = { viewModel.handleIntent(BrowserIntent.NewTab) },
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
+                thumbnails = viewModel.thumbnails
             )
         } else {
             BrowserContent(
                 viewModel = viewModel,
+                onWebViewCreated = { webView = it },
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -78,7 +83,8 @@ fun BrowserScreen(viewModel: BrowserViewModel) {
 @Composable
 fun BrowserContent(
     modifier: Modifier,
-    viewModel: BrowserViewModel
+    viewModel: BrowserViewModel,
+    onWebViewCreated: (WebView) -> Unit = {}
 ) {
     val state by viewModel.browserState.collectAsState()
     var searchValue by rememberSaveable { mutableStateOf("") }
@@ -203,7 +209,10 @@ fun BrowserContent(
                     .weight(1f),
                 onProgressChanged = { viewModel.handleIntent(BrowserIntent.UpdateProgress(it)) },
                 onUrlChanged = { viewModel.handleIntent(BrowserIntent.UrlChanged(it)) },
-                onCreated = { webView = it },
+                onCreated = {
+                    webView = it
+                    onWebViewCreated(it)
+                },
                 onError = { viewModel.handleIntent(BrowserIntent.PageError) },
                 onPageStarted = { viewModel.handleIntent(BrowserIntent.ClearError) }
             )
