@@ -1,4 +1,4 @@
-package com.rivi.truesparrowbrowser.dependencies
+package com.rivi.truesparrowbrowser.di
 
 import com.rivi.truesparrowbrowser.data.repository.BrowserTabRepositoryImpl
 import com.rivi.truesparrowbrowser.domain.repository.BrowserTabRepository

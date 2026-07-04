@@ -38,6 +38,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.R
 
+/**
+ * A custom search bar component that provides browser navigation controls and a text input field.
+ *
+ * This component includes buttons for navigating backward and forward in history, a text field
+ * for entering search queries or URLs, and a dynamic button that switches between reload and
+ * stop actions based on the loading state.
+ *
+ * @param searchValue The current [TextFieldValue] to be displayed in the search input.
+ * @param onSearchValueChange Callback triggered when the input text or selection changes.
+ * @param canGoBack Boolean flag indicating if the back navigation button should be enabled.
+ * @param canGoForward Boolean flag indicating if the forward navigation button should be enabled.
+ * @param hasUrl Boolean flag indicating if the current state allows for reload or stop actions.
+ * @param isLoading Boolean flag indicating if a page is currently loading, toggling between the stop and reload icons.
+ */
 @Composable
 fun SearchBarCard(
     searchValue: TextFieldValue,

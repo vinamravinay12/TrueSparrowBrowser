@@ -25,6 +25,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 
+
+/**
+ * A search input field designed for the home screen that allows users to enter search queries or URLs.
+ *
+ * This component features a rounded design, a search icon, and manages its own internal text state.
+ * It automatically handles keyboard visibility and focus clearing when a search is triggered.
+ *
+ * @param onSearch Callback invoked when the user triggers the search action (e.g., by pressing the
+ * Search button on the software keyboard), providing the current text in the field.
+ */
 @Composable
 fun HomeSearchField(onSearch: (String) -> Unit) {
     var value by remember { mutableStateOf(TextFieldValue("")) }

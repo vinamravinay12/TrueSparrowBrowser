@@ -22,6 +22,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * A composable that represents the bottom navigation bar of the browser.
+ *
+ * It provides quick access to core browser actions such as navigating home, opening a new tab,
+ * switching between existing tabs, and accessing settings.
+ *
+ * @param tabCount The number of currently open tabs to display in the tab switcher icon.
+ * @param onHomeClick Callback invoked when the home icon is clicked.
+ * @param onNewTabClick Callback invoked when the add icon is clicked.
+ * @param onSettingsClick Callback invoked when the settings/more icon is clicked.
+ * @param onTabsClick Callback invoked when the tab switcher icon is clicked.
+ * @param modifier The [Modifier] to be applied to the [BottomAppBar].
+ */
 @Composable
 fun BrowserBottomBar(
     tabCount: Int = 1,

@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.data.models.BrowserTab
 
+
 @Composable
 fun TabCard(
     tab: BrowserTab, isActive: Boolean,

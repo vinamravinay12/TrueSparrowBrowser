@@ -23,6 +23,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+
+/**
+ * A composable card component that represents an action to open a new tab in tab management screen.
+ *
+ * It displays a centered "+" icon and a "New tab" label within a styled [Card]
+ * with a specific aspect ratio.
+ *
+ * @param onClick The callback to be executed when the card is clicked.
+ */
 @Composable
 fun NewTabCard(onClick: () -> Unit) {
     Card(

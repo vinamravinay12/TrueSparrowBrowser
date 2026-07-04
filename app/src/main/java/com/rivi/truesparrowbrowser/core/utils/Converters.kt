@@ -1,4 +1,4 @@
-package com.rivi.truesparrowbrowser.core
+package com.rivi.truesparrowbrowser.core.utils
 
 import androidx.room.TypeConverter
 import org.json.JSONArray

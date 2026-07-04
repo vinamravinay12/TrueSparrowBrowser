@@ -10,6 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 
+/**
+ * A Composable function that wraps an Android [WebView] to display web content.
+ *
+ * @param pageUrl The URL to be loaded in the WebView.
+ * @param modifier The [Modifier] to be applied to the WebView layout.
+ * @param onProgressChanged A callback invoked when the loading progress changes, returning an integer between 0 and 100.
+ */
 @Composable
 fun WebViewScreen(
     pageUrl: String,

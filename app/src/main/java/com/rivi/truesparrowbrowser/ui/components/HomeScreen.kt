@@ -31,6 +31,14 @@ import androidx.compose.ui.unit.sp
 import com.rivi.truesparrowbrowser.R
 import com.rivi.truesparrowbrowser.domain.models.Shortcut
 
+/**
+ * Represents the home screen of the browser, providing a search interface and quick-access shortcuts.
+ *
+ * This screen displays the app branding, a central search field, and a row of shortcut cards
+ * that allow users to quickly navigate to predefined URLs or search terms.
+ *
+ * @param onSearch Callback invoked when a search is initiated or a shortcut is clicked,
+ */
 @Composable
 fun HomeScreen(
     onSearch: (String) -> Unit,
