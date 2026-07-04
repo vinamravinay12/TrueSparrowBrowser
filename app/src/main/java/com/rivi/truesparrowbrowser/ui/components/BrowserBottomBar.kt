@@ -1,0 +1,74 @@
+package com.rivi.truesparrowbrowser.ui.components
+
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+@Composable
+fun BrowserBottomBar(
+    tabCount: Int = 1,
+    onHomeClick: () -> Unit,
+    onNewTabClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    onTabsClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    BottomAppBar(modifier = modifier.fillMaxWidth()) {
+        IconButton(onClick = onHomeClick, modifier = Modifier.weight(1f)) {
+            Icon(imageVector = Icons.Default.Home, contentDescription = "Home")
+        }
+
+        IconButton(onClick = onNewTabClick, modifier = Modifier.weight(1f)) {
+            Icon(imageVector = Icons.Default.Add, contentDescription = "Open new tab")
+        }
+
+        IconButton(onClick = onTabsClick, modifier = Modifier.weight(1f)) {
+            Box(
+                modifier = Modifier
+                    .size(22.dp)
+                    .clip(RoundedCornerShape(6.dp))
+                    .border(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = tabCount.toString(),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+            }
+        }
+
+        IconButton(onClick = onSettingsClick, modifier = Modifier.weight(1f)) {
+            Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More Settings")
+        }
+    }
+}
+
+private fun Modifier.border(): Modifier {
+    return this.then(
+        border(
+            width = 1.5.dp,
+            color = Color.Gray,
+            shape = RoundedCornerShape(6.dp)
+        )
+    )
+}
