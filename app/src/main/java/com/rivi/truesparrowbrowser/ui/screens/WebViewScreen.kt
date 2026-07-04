@@ -1,83 +1,75 @@
-package com.rivi.truesparrowbrowser.ui.screens
-
-import android.graphics.Bitmap
 import android.webkit.WebChromeClient
-import android.webkit.WebResourceError
-import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
 fun WebViewScreen(
-    pageUrl: String, modifier: Modifier, onProgressChanged: (Int) -> Unit = {},
+    pageUrl: String,
+    modifier: Modifier,
+    onProgressChanged: (Int) -> Unit = {},
     onUrlChanged: (String) -> Unit = {},
     onCreated: (WebView) -> Unit = {},
     onError: () -> Unit = {},
     onPageStarted: () -> Unit = {}
 ) {
-    var lastLoadedUrl by rememberSaveable { mutableStateOf<String?>(null) }
-    AndroidView(
-        modifier = modifier,
-        factory = { context ->
-            return@AndroidView WebView(context).apply {
-                settings.javaScriptEnabled = true
-                webViewClient = object : WebViewClient() {
+    val context = LocalContext.current
+    var lastLoadedUrl by remember { mutableStateOf<String?>(null) }
 
-                    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                        super.onPageStarted(view, url, favicon)
-                        onPageStarted()
-                    }
+    val webView = remember {
+        WebView(context).apply {
+            settings.javaScriptEnabled = true
+            settings.loadWithOverviewMode = true
+            settings.useWideViewPort = true
+            settings.setSupportZoom(false)
+            webViewClient = object : WebViewClient() {
+                override fun onPageStarted(v: WebView?, u: String?, f: android.graphics.Bitmap?) {
+                    super.onPageStarted(v, u, f); onPageStarted()
+                }
 
-                    override fun onReceivedError(
-                        view: WebView?,
-                        request: WebResourceRequest?,
-                        error: WebResourceError?
-                    ) {
-                        super.onReceivedError(view, request, error)
-                        if (request?.isForMainFrame == true) onError()
-                    }
-
-                    override fun doUpdateVisitedHistory(
-                        view: WebView?,
-                        url: String?,
-                        isReload: Boolean
-                    ) {
-
-                        super.doUpdateVisitedHistory(view, url, isReload)
-                        if (url != lastLoadedUrl) {
-                            lastLoadedUrl = url
-                            url?.let { onUrlChanged(it) }
-                        }
+                override fun doUpdateVisitedHistory(v: WebView, u: String, r: Boolean) {
+                    super.doUpdateVisitedHistory(v, u, r)
+                    if (u != lastLoadedUrl) {
+                        lastLoadedUrl = u; onUrlChanged(u)
                     }
                 }
 
-                settings.loadWithOverviewMode = true
-                settings.useWideViewPort = true
-                settings.setSupportZoom(false)
-                webChromeClient = object : WebChromeClient() {
-                    override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                        onProgressChanged(newProgress)
-                    }
-
-
+                override fun onReceivedError(
+                    v: WebView,
+                    req: android.webkit.WebResourceRequest,
+                    e: android.webkit.WebResourceError
+                ) {
+                    super.onReceivedError(v, req, e)
+                    if (req.isForMainFrame) onError()
                 }
-            }.also {
-                onCreated(it)
             }
-        },
-        update = { webView ->
+            webChromeClient = object : WebChromeClient() {
+                override fun onProgressChanged(v: WebView?, p: Int) {
+                    onProgressChanged(p)
+                }
+
+                override fun onPermissionRequest(request: android.webkit.PermissionRequest) {
+                    request.deny()
+                }
+            }
+        }.also { onCreated(it) }
+    }
+
+    AndroidView(
+        factory = { webView },
+        modifier = modifier,
+        update = {
             if (pageUrl.isNotBlank() && pageUrl != lastLoadedUrl) {
                 lastLoadedUrl = pageUrl
-                webView.loadUrl(pageUrl)
+                it.loadUrl(pageUrl)
             }
         }
-
     )
 }

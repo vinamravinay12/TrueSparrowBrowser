@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -55,8 +56,9 @@ fun SearchBarCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                onClick = { moveBack },
-                enabled = canGoBack
+                onClick = { moveBack() },
+                enabled = canGoBack,
+                modifier = Modifier.size(32.dp)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_back),
@@ -67,7 +69,8 @@ fun SearchBarCard(
 
             IconButton(
                 onClick = { moveForward() },
-                enabled = canGoForward
+                enabled = canGoForward,
+                modifier = Modifier.size(32.dp)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_next),

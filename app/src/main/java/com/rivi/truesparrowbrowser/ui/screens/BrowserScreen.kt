@@ -1,5 +1,6 @@
 package com.rivi.truesparrowbrowser.ui.screens
 
+import WebViewScreen
 import android.webkit.WebView
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
