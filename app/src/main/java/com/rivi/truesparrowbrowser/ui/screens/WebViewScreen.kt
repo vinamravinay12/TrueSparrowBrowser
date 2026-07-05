@@ -25,7 +25,8 @@ fun WebViewScreen(
     onCreated: (WebView) -> Unit = {},
     onError: () -> Unit = {},
     onPageStarted: () -> Unit = {},
-    onNavStateChanged: (canGoBack: Boolean, canGoForward: Boolean) -> Unit = { _, _ -> }
+    onNavStateChanged: (canGoBack: Boolean, canGoForward: Boolean) -> Unit = { _, _ -> },
+    onDestroyed: () -> Unit = {}
 ) {
     val context = LocalContext.current
     var lastLoadedUrl by remember { mutableStateOf<String?>(null) }
@@ -85,10 +86,15 @@ fun WebViewScreen(
 
     DisposableEffect(Unit) {
         onDispose {
-            (webView.parent as? android.view.ViewGroup)?.removeView(webView)
             webView.stopLoading()
+            webView.loadUrl("about:blank")              // drop the current page + JS
+            (webView.parent as? android.view.ViewGroup)?.removeView(webView)
+            webView.clearHistory()
+            webView.removeAllViews()
+            webView.webViewClient = WebViewClient()      // detach the capturing client
             webView.webChromeClient = null
             webView.destroy()
+            onDestroyed()                                // let the host clear its reference
         }
     }
 }

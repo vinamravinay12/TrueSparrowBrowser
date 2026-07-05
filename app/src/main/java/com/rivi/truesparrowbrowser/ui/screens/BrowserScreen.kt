@@ -75,6 +75,7 @@ fun BrowserScreen(viewModel: BrowserViewModel) {
             BrowserContent(
                 viewModel = viewModel,
                 onWebViewCreated = { webView = it },
+                onWebViewDestroyed = { webView = null },
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -85,7 +86,8 @@ fun BrowserScreen(viewModel: BrowserViewModel) {
 fun BrowserContent(
     modifier: Modifier,
     viewModel: BrowserViewModel,
-    onWebViewCreated: (WebView) -> Unit = {}
+    onWebViewCreated: (WebView) -> Unit = {},
+    onWebViewDestroyed: () -> Unit = {}
 ) {
     val state by viewModel.browserState.collectAsState()
     var searchValue by remember { mutableStateOf(TextFieldValue("")) }
@@ -167,6 +169,10 @@ fun BrowserContent(
                     onPageStarted = { viewModel.handleIntent(BrowserIntent.ClearError) },
                     onNavStateChanged = { back, fwd ->
                         viewModel.handleIntent(BrowserIntent.NavStateChanged(back, fwd))
+                    },
+                    onDestroyed = {
+                        webView = null
+                        onWebViewDestroyed()
                     }
                 )
                 if (state.isLoading) {
